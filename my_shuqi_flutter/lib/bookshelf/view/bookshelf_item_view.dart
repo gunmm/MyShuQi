@@ -16,12 +16,24 @@ class BookshelfItemView extends StatelessWidget {
         width: width,
         child: Column(
           children: <Widget>[
-            Image.network(
-              novel.imgUrl,
-              width: width,
-              height: width / 0.75,
-              fit: BoxFit.cover,
+            DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x22000000),
+                      blurRadius: 5,
+                    ),
+                  ],
+                ),
+              child: Image.network(
+                novel.imgUrl,
+                width: width,
+                height: width / 0.75,
+                fit: BoxFit.cover,
+              ),
             ),
+
             SizedBox(height: 10),
             Text(novel.name,
               style: TextStyle(

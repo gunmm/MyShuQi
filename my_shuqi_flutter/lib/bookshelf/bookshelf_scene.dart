@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:my_shuqi_flutter/utils/public_head.dart';
-import 'bookshelf_item_view.dart';
+import 'package:my_shuqi_flutter/bookshelf/view/bookshelf_item_view.dart';
+import 'view/bookshelf_header.dart';
 
 class BookshelfScene extends StatefulWidget {
   @override
@@ -51,29 +52,34 @@ class BookshelfSceneState extends State<BookshelfScene> {
     });
   }
 
+  Widget buildTopButtons(Color color) {
+    return Row(
+        children: <Widget>[
+          Container(
+            height: kToolbarHeight,
+            width: 44,
+            child: Image.asset(
+                'images/actionbar_checkin.png', color: color),
+          ),
+          Container(
+            height: kToolbarHeight,
+            width: 44,
+            child: Image.asset(
+                'images/actionbar_search.png', color: color),
+          ),
+          SizedBox(width: 15)
+        ]
+    );
+  }
+
   Widget buildNavigationBar() {
     return Stack(
       children: <Widget>[
         Positioned(
           right: 0,
           child: Container(
-            margin: EdgeInsets.fromLTRB(5, Screen.topSafeHeight, 0, 0),
-            child: Row(
-                children: <Widget>[
-                  Container(
-                    height: kToolbarHeight,
-                    width: 44,
-                    child: Image.asset(
-                        'images/actionbar_checkin.png', color: Colors.white),
-                  ),
-                  Container(
-                    height: kToolbarHeight,
-                    width: 44,
-                    child: Image.asset(
-                        'images/actionbar_search.png', color: Colors.white),
-                  ),
-                  SizedBox(width: 15)
-                ]),
+            margin: EdgeInsets.only(top: Screen.topSafeHeight),
+            child: buildTopButtons(Colors.white),
           )
         ),
         Opacity(
@@ -84,24 +90,12 @@ class BookshelfSceneState extends State<BookshelfScene> {
             child: Row(
               children: <Widget>[
                 SizedBox(width: 103),
-                Expanded(child: Text("书架",textAlign: TextAlign.center,)),
-                Row(
-                    children: <Widget>[
-                      Container(
-                        height: kToolbarHeight,
-                        width: 44,
-                        child: Image.asset(
-                            'images/actionbar_checkin.png',
-                            color: Colors.black),
-                      ),
-                      Container(
-                        height: kToolbarHeight,
-                        width: 44,
-                        child: Image.asset(
-                            'images/actionbar_search.png', color: Colors.black),
-                      ),
-                      SizedBox(width: 15)
-                    ]),
+                Expanded(child: Text("书架",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                )
+                ),
+                buildTopButtons(Colors.black),
               ],
             ),
           ),
@@ -117,10 +111,11 @@ class BookshelfSceneState extends State<BookshelfScene> {
       children.add(BookshelfItemView(data));
     });
     return Container(
+      color: Colors.white,
       padding: EdgeInsets.fromLTRB(15, 20, 15, 15),
       child: Wrap(
         spacing: 15,
-        runSpacing: 15,
+        runSpacing: 20,
         children: children,
       ),
     );
@@ -137,6 +132,7 @@ class BookshelfSceneState extends State<BookshelfScene> {
               controller: _scrollController,
               padding: EdgeInsets.only(top: 0),
               children: <Widget>[
+                _favoriteNovels.length > 0 ? BookshelfHeader(_favoriteNovels[0]) : Container(),
                 buildFavoriteView(),
               ],
             ),

@@ -4,6 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_shuqi_flutter/utils/public_head.dart';
 import 'home_banner.dart';
 import 'home_menu.dart';
+import 'home_section_style1.dart';
+import 'home_section_style2.dart';
 
 enum HomeListType {
   excellent,
@@ -76,10 +78,20 @@ class HomeListViewState extends State<HomeListView> {
     } else if(module.menus != null) {
       return HomeMenu(module.menus);
     } else if(module.books != null) {
-      return new Container(
-        height: 200,
-        color: Colors.green,
-      );
+      switch (module.style) {
+        case 1:
+          return HomeSectionStyle1(module);
+          break;
+        case 2:
+          return HomeSectionStyle2(module);
+          break;
+        case 3:
+          return HomeSectionStyle2(module);
+          break;
+        case 4:
+          return HomeSectionStyle2(module);
+          break;
+      }
     }
 
     return new Container();

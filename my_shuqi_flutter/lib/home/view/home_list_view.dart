@@ -6,7 +6,7 @@ import 'home_banner.dart';
 import 'home_menu.dart';
 import 'home_section_style1.dart';
 import 'home_section_style2.dart';
-
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 enum HomeListType {
   excellent,
   male,
@@ -25,12 +25,16 @@ class HomeListView extends StatefulWidget {
 }
 
 class HomeListViewState extends State<HomeListView> {
+  GlobalKey<EasyRefreshState> _easyRefreshKey = new GlobalKey<EasyRefreshState>();
+  GlobalKey<RefreshHeaderState> _headerKey = new GlobalKey<RefreshHeaderState>();
+  GlobalKey<RefreshFooterState> _footerKey = new GlobalKey<RefreshFooterState>();
+
   List<CarouselInfo> carouselInfos = [];
   List<HomeModule> modules = [];
 
-  Future<void> loadData() async{
-    
-    Future.delayed(Duration(seconds: 2), () async {
+  Future<Null> loadData() async{
+
+    return Future.delayed(Duration(seconds: 2), () async {
       try {
         var action;
         switch(this.widget.type) {
@@ -100,15 +104,53 @@ class HomeListViewState extends State<HomeListView> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     return Container(
-      child: RefreshIndicator(
-          child: ListView.builder(
-            itemCount: this.modules.length,
-            itemBuilder: (BuildContext context, int index) {
-              return buildModule(this.modules[index]);
-            },
-          ),
-          onRefresh: loadData
+      child:
+      EasyRefresh(
+        onRefresh: loadData,
+        refreshHeader: ClassicsHeader(
+          key: _headerKey,
+          refreshText: "pullToRefresh",
+          refreshReadyText: "releaseToRefresh",
+          refreshingText: "refreshing" + "...",
+          refreshedText: "refreshed",
+          moreInfo: (DateTime.now()).toString().substring(0, 19),
+          bgColor: Colors.transparent,
+          textColor: Colors.black87,
+          moreInfoColor: Colors.black54,
+          showMore: true,
+        ),
+        refreshFooter: ClassicsFooter(
+          key: _footerKey,
+          loadText: "pushToLoad",
+          loadReadyText: "releaseToLoad",
+          loadingText: "loading",
+          loadedText: "loaded",
+          noMoreText: "loaded",
+          moreInfo: (DateTime.now()).toString().substring(0, 19),
+          bgColor: Colors.transparent,
+          textColor: Colors.black87,
+          moreInfoColor: Colors.black54,
+          showMore: true,
+        ),
+        footerStatusChanged: (FooterStatus){
+          print(FooterStatus);
+//          if (FooterStatus == RefreshFooterStatus.LOADED) {
+//
+//          }
+//
+//
+//            _footerKey.currentState.refreshFooterStatus = RefreshFooterStatus.LOADED;
+
+        },
+        loadMore: loadData,
+        child: ListView.builder(
+          itemCount: this.modules.length,
+          itemBuilder: (BuildContext context, int index) {
+            return buildModule(this.modules[index]);
+          },
+        ),
       ),
     );
   }

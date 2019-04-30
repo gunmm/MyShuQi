@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_shuqi_flutter/utils/public_head.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+
 
 class HomeFourItem extends StatefulWidget {
   final Novel novel;
@@ -20,6 +22,13 @@ class HomeFourItemState extends State<HomeFourItem> {
     return GestureDetector(
       onTap: (){
         print("tapAct");
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return WebviewScaffold(url: "https://www.baidu.com/",
+            appBar: AppBar(
+              title: Text("111"),
+            ),
+          );
+        }));
       },
       child: Container(
         width: width,
@@ -27,12 +36,24 @@ class HomeFourItemState extends State<HomeFourItem> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Image.network(
-              this.widget.novel.imgUrl,
-              width: width,
-              height: width / 0.75,
-              fit: BoxFit.cover,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x22000000),
+                    blurRadius: 2,
+                  ),
+                ],
+              ),
+              child: Image.network(
+                this.widget.novel.imgUrl,
+                width: width,
+                height: width / 0.75,
+                fit: BoxFit.cover,
+              ),
             ),
+
             SizedBox(height: 5,),
             Text(this.widget.novel.name,
               style: TextStyle(

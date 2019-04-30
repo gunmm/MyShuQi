@@ -16,7 +16,7 @@ class Novel {
 
     int recommendIntNum = int.parse(data['recommend_num']);
     if (recommendIntNum > 10000) {
-      recommendNum = "${recommendIntNum/10000}万人";
+      recommendNum = "${(recommendIntNum/10000).toStringAsFixed(2)}万人";
     } else {
       recommendNum = "$recommendIntNum人";
     }
